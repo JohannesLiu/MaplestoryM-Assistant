@@ -32,6 +32,9 @@ if __name__ == "__main__":
     autoplay_button_pic = cv2.imread("./raw_data/US/Buttons/AutoPlay.png")
     go_manully_button_pic = cv2.imread("./raw_data/US/Buttons/GoManully.png")
     autoassign_button_pic = cv2.imread("./raw_data/US/Buttons/AutoAssign_Button.png")
+    equip_button_pic = cv2.imread("./raw_data/US/Buttons/Equip-Button.png")
+    Available2Start_ComplexButton_pic = cv2.imread("./raw_data/US/Buttons/Available2Start-ComplexButton.png")
+    Complete_ComplexButton_pic = cv2.imread("./raw_data/US/Buttons/Complete-ComplexButton.png")
     c = 0.5
 
     run_count = 0
@@ -59,9 +62,14 @@ if __name__ == "__main__":
             os.popen("adb connect 127.0.0.1:" + str(adb_port))
             continue
         print("Begin Perturbation!")
-        if  locateOnPicture(autoassign_button_pic, im, confidence = 0.8):
+        if locateOnPicture(autoassign_button_pic, im, confidence = 0.8):
             print("Auto Assign")
             retVal = locateCenterOnPicture(autoassign_button_pic, im, confidence = c)
+            os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            time.sleep(1)
+        elif locateOnPicture(equip_button_pic, im, confidence = 0.8):
+            print("Auto Equip")
+            retVal = locateCenterOnPicture(equip_button_pic, im, confidence = c)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             time.sleep(1)
         elif locateOnPicture(accept_button_pic, im, confidence = c):
@@ -84,6 +92,16 @@ if __name__ == "__main__":
             retVal = locateCenterOnPicture(complete_button_pic, im, confidence = c)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             time.sleep(2)
+        elif locateOnPicture(Available2Start_ComplexButton_pic, im, confidence = 0.8):
+            print("Complex Choice: Accept")
+            retVal = locateCenterOnPicture(Available2Start_ComplexButton_pic, im, confidence = c)
+            os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            time.sleep(2)
+        elif locateOnPicture(Complete_ComplexButton_pic, im, confidence = c):
+            print("Complex Choice: Complete")
+            retVal = locateCenterOnPicture(Complete_ComplexButton_pic, im, confidence = c)
+            os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            time.sleep(2)
         elif locateOnPicture(go_manully_button_pic, im, confidence = 0.8):
             print("In Autoplay Status")
             time.sleep(5)
@@ -104,5 +122,5 @@ if __name__ == "__main__":
         else:
             os.system("adb shell input tap 1161 481")
             plt.imshow(im)
-            print("Nothing to Do")
+            print("Talking or Nothing to Do")
             time.sleep(1)

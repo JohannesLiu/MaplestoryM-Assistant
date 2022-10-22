@@ -205,6 +205,21 @@ def locateOnPicture(image, picture = 0, minSearchTime=0, **kwargs):
                 else:
                     return None
 
+def pixelMatchesColor(pix, expectedRGBColor, tolerance=0):
+    """
+    TODO
+    """
+    if len(pix) == 3 or len(expectedRGBColor) == 3: #RGB mode
+        r, g, b = pix[:3]
+        exR, exG, exB = expectedRGBColor[:3]
+        return (abs(r - exR) <= tolerance) and (abs(g - exG) <= tolerance) and (abs(b - exB) <= tolerance)
+    elif len(pix) == 4 and len(expectedRGBColor) == 4: #RGBA mode
+        r, g, b, a = pix
+        exR, exG, exB, exA = expectedRGBColor
+        return (abs(r - exR) <= tolerance) and (abs(g - exG) <= tolerance) and (abs(b - exB) <= tolerance) and (abs(a - exA) <= tolerance)
+    else:
+        assert False, 'Color mode was expected to be length 3 (RGB) or 4 (RGBA), but pixel is length %s and expectedRGBColor is length %s' % (len(pix), len(expectedRGBColor))
+
 def locateCenterOnPicture(image, picture = 0, **kwargs):
     """
     TODO
@@ -214,6 +229,7 @@ def locateCenterOnPicture(image, picture = 0, **kwargs):
         return None
     else:
         return center(coords)
+
 
 if useOpenCV:
     locateAll = _locateAll_opencv

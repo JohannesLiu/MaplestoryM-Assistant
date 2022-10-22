@@ -6,3 +6,7 @@ Maplestory is one of my favorite video games when I was a Child. There are too m
 
 I investigated almost all the solutions for play MaplestoryM automatically. I learned a lot from these solutions. However, I find these solutions are not enough smart to enable a long time auto-interaction. So I developed this MaplestoryM-Assistant. Because the interaction methods of MapleStory is very complex. So, I would update this project for several times. Now, the first version enables basic automatic interactions with the environment. I will release a tutorial for it later.
 
+Finally, wish you have fun!
+
+
+![MapleStoryM](./img.png)

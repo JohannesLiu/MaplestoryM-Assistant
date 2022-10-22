@@ -35,6 +35,7 @@ if __name__ == "__main__":
     equip_button_pic = cv2.imread("./raw_data/US/Buttons/Equip-Button.png")
     Available2Start_ComplexButton_pic = cv2.imread("./raw_data/US/Buttons/Available2Start-ComplexButton.png")
     Complete_ComplexButton_pic = cv2.imread("./raw_data/US/Buttons/Complete-ComplexButton.png")
+    CloseMail_Button_pic = cv2.imread("./raw_data/US/Buttons/CloseMail-Button.png")
     c = 0.5
 
     run_count = 0
@@ -64,12 +65,17 @@ if __name__ == "__main__":
         print("Begin Perturbation!")
         if locateOnPicture(autoassign_button_pic, im, confidence = 0.8):
             print("Auto Assign")
-            retVal = locateCenterOnPicture(autoassign_button_pic, im, confidence = c)
+            retVal = locateCenterOnPicture(autoassign_button_pic, im, confidence = 0.8)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             time.sleep(1)
         elif locateOnPicture(equip_button_pic, im, confidence = 0.8):
             print("Auto Equip")
-            retVal = locateCenterOnPicture(equip_button_pic, im, confidence = c)
+            retVal = locateCenterOnPicture(equip_button_pic, im, confidence = 0.8)
+            os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            time.sleep(1)
+        elif locateOnPicture(CloseMail_Button_pic, im, confidence=0.95):
+            print("Close All Mail")
+            retVal = locateCenterOnPicture(CloseMail_Button_pic, im, confidence=0.95)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             time.sleep(1)
         elif locateOnPicture(accept_button_pic, im, confidence = c):
@@ -92,14 +98,14 @@ if __name__ == "__main__":
             retVal = locateCenterOnPicture(complete_button_pic, im, confidence = c)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             time.sleep(2)
-        elif locateOnPicture(Available2Start_ComplexButton_pic, im, confidence = 0.8):
-            print("Complex Choice: Accept")
-            retVal = locateCenterOnPicture(Available2Start_ComplexButton_pic, im, confidence = c)
+        elif locateOnPicture(Complete_ComplexButton_pic, im, confidence = 0.9):
+            print("Complex Choice: Complete")
+            retVal = locateCenterOnPicture(Complete_ComplexButton_pic, im, confidence = 0.9)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             time.sleep(2)
-        elif locateOnPicture(Complete_ComplexButton_pic, im, confidence = c):
-            print("Complex Choice: Complete")
-            retVal = locateCenterOnPicture(Complete_ComplexButton_pic, im, confidence = c)
+        elif locateOnPicture(Available2Start_ComplexButton_pic, im, confidence = 0.9):
+            print("Complex Choice: Accept")
+            retVal = locateCenterOnPicture(Available2Start_ComplexButton_pic, im, confidence = 0.9)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             time.sleep(2)
         elif locateOnPicture(go_manully_button_pic, im, confidence = 0.8):

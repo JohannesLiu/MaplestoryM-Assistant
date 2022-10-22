@@ -38,6 +38,7 @@ if __name__ == "__main__":
     CloseMail_Button_pic = cv2.imread("./raw_data/US/Buttons/CloseMail-Button.png")
 
     AutoBattle_Status_pic  = cv2.imread("./raw_data/US/Status/AutoBattle-Status.png")
+    AutoQuest_Status_pic  = cv2.imread("./raw_data/US/Status/AutoQuest-Status.png")
     c = 0.5
 
     run_count = 0
@@ -119,7 +120,7 @@ if __name__ == "__main__":
             print(retVal)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             time.sleep(10)
-        elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) and locateOnPicture(AutoBattle_Status_pic, im, confidence = 0.5):
+        elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) and locateOnPicture(AutoBattle_Status_pic, im, confidence = 0.8) and not locateOnPicture(AutoQuest_Status_pic, im, confidence = 0.8):
             print("Start Quest")
             os.system("adb shell input tap 200 200")
             time.sleep(2)

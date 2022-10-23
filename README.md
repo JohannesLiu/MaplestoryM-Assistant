@@ -1,4 +1,4 @@
-# MaplestoryM-Assistance（冒险岛手游辅助）
+# MaplestoryM-Assistant（冒险岛手游辅助）
 Developer: Xiaokai(Johannes) Liu
 ## Introduction
 

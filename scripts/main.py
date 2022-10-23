@@ -140,7 +140,6 @@ if __name__ == "__main__":
                 print("Keep Quest")
                 continue
             # Quest_State += 1
-
         elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[40, 110], (210, 195, 140), tolerance=20):
             print("Skip")
             os.system("adb shell input tap 284 402")

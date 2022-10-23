@@ -8,5 +8,4 @@ I investigated almost all the solutions for play MaplestoryM automatically. I le
 
 Finally, wish you have fun!
 
-
 ![MapleStoryM](./img.png)

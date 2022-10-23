@@ -90,17 +90,20 @@ if __name__ == "__main__":
         elif locateOnPicture(claim_button_pic, im, confidence = c):
             print("claim")
             retVal = locateCenterOnPicture(claim_button_pic, im, confidence = c)
-            os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            # os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            os.system("adb shell input tap 1096 427")
             time.sleep(2)
         elif locateOnPicture(confirm_button_pic, im, confidence = c):
             print("confirm")
             retVal = locateCenterOnPicture(confirm_button_pic, im, confidence = c)
-            os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            # os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            os.system("adb shell input tap 1096 427")
             time.sleep(2)
         elif locateOnPicture(complete_button_pic, im, confidence = c):
             print("complete")
             retVal = locateCenterOnPicture(complete_button_pic, im, confidence = c)
-            os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            # os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            os.system("adb shell input tap 1096 427")
             time.sleep(2)
         elif locateOnPicture(Complete_ComplexButton_pic, im, confidence = 0.9):
             print("Complex Choice: Complete")
@@ -121,7 +124,7 @@ if __name__ == "__main__":
             print(retVal)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             time.sleep(10)
-        elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) and locateOnPicture(AutoBattle_Status_pic, im, confidence = 0.8) and not locateOnPicture(AutoQuest_Status_pic, im, confidence = 0.8):
+        elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) and locateOnPicture(AutoBattle_Status_pic, im[610:700, 390:450], confidence = 0.9) and not locateOnPicture(AutoQuest_Status_pic, im[610:700, 390:450], confidence = 0.9):
             print("Start Quest")
             os.system("adb shell input tap 200 200")
             time.sleep(2)

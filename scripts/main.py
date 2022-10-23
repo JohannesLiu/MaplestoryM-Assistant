@@ -17,7 +17,7 @@ from skimage.metrics import peak_signal_noise_ratio as compare_psnr
 
 WORKPATH = "C:/Users/Johan/Documents/PycharmProjects/MaplestoryM-Assistant"
 desired_window = "BlueStacks App Player"
-adb_port = 13221
+adb_port = 3545
 os.chdir(WORKPATH)
 
 
@@ -41,9 +41,11 @@ if __name__ == "__main__":
     Available2Start_ComplexButton_pic = cv2.imread("./raw_data/US/Buttons/Available2Start-ComplexButton.png")
     Complete_ComplexButton_pic = cv2.imread("./raw_data/US/Buttons/Complete-ComplexButton.png")
     CloseMail_Button_pic = cv2.imread("./raw_data/US/Buttons/CloseMail-Button.png")
-
     AutoBattle_Status_pic  = cv2.imread("./raw_data/US/Status/AutoBattle-Status.png")
     AutoQuest_Status_pic  = cv2.imread("./raw_data/US/Status/AutoQuest-Status.png")
+
+    WaitQuestTime = 0
+
     c = 0.55
     run_count = 0
     while True:
@@ -133,12 +135,14 @@ if __name__ == "__main__":
             sv1 = compare_psnr(AutoBattle_Status_pic, im[625:685, 390:455])
             sv2 = compare_psnr(AutoQuest_Status_pic, im[625:685, 390:455])
             print("sv1 : " + str(sv1) + " sv2: "  + str(sv2) + "\n sv1-sv2: " + str(sv1 - sv2))
-            if sv1 - sv2 >= -1:
+            if sv1 - sv2 > -0.5 or WaitQuestTime > 10:
                 print("Start Quest")
                 os.system("adb shell input tap 200 200")
                 time.sleep(2)
+                WaitQuestTime = 0
             else:
                 print("Keep Quest")
+                WaitQuestTime += 1
                 continue
             # Quest_State += 1
         elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[40, 110], (210, 195, 140), tolerance=20):

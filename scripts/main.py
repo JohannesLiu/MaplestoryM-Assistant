@@ -20,10 +20,14 @@ adb_port = 13221
 os.chdir(WORKPATH)
 
 
+
 if __name__ == "__main__":
     print(os.popen('adb devices').read())
     connect = os.popen("adb connect 127.0.0.1:" + str(adb_port)).read()
     print(connect)
+
+    Quest_State = 0
+    Quest_Timer = 0
 
     accept_button_pic = cv2.imread("./raw_data/US/Buttons/Accept_Button.png")
     claim_button_pic = cv2.imread("./raw_data/US/Buttons/ClaimReward_Button.png")
@@ -39,8 +43,7 @@ if __name__ == "__main__":
 
     AutoBattle_Status_pic  = cv2.imread("./raw_data/US/Status/AutoBattle-Status.png")
     AutoQuest_Status_pic  = cv2.imread("./raw_data/US/Status/AutoQuest-Status.png")
-    c = 0.5
-
+    c = 0.6
     run_count = 0
     while True:
         clear_output(wait=True)
@@ -81,28 +84,28 @@ if __name__ == "__main__":
             retVal = locateCenterOnPicture(CloseMail_Button_pic, im, confidence=0.95)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             time.sleep(1)
+        elif locateOnPicture(claim_button_pic, im, confidence = c):
+            print("Claim")
+            retVal = locateCenterOnPicture(claim_button_pic, im, confidence = c)
+            # os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            os.system("adb shell input tap 637 648")
+            time.sleep(2)
         elif locateOnPicture(accept_button_pic, im, confidence = c): # tap: 1096 427
             print("Accept")
             retVal = locateCenterOnPicture(accept_button_pic, im, confidence = c)
-            # os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
-            os.system("adb shell input tap 1096 427")
-            time.sleep(2)
-        elif locateOnPicture(claim_button_pic, im, confidence = c):
-            print("claim")
-            retVal = locateCenterOnPicture(claim_button_pic, im, confidence = c)
-            # os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             os.system("adb shell input tap 1096 427")
             time.sleep(2)
         elif locateOnPicture(confirm_button_pic, im, confidence = c):
-            print("confirm")
+            print("Confirm")
             retVal = locateCenterOnPicture(confirm_button_pic, im, confidence = c)
-            # os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             os.system("adb shell input tap 1096 427")
             time.sleep(2)
         elif locateOnPicture(complete_button_pic, im, confidence = c):
-            print("complete")
+            print("Complete")
             retVal = locateCenterOnPicture(complete_button_pic, im, confidence = c)
-            # os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             os.system("adb shell input tap 1096 427")
             time.sleep(2)
         elif locateOnPicture(Complete_ComplexButton_pic, im, confidence = 0.9):
@@ -124,10 +127,10 @@ if __name__ == "__main__":
             print(retVal)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             time.sleep(10)
-        elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) and locateOnPicture(AutoBattle_Status_pic, im[610:700, 390:450], confidence = 0.9) and not locateOnPicture(AutoQuest_Status_pic, im[610:700, 390:450], confidence = 0.9):
+        elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) and locateOnPicture(AutoBattle_Status_pic, im[610:700, 390:450], confidence = 0.90) and not locateOnPicture(AutoQuest_Status_pic, im[610:700, 390:450], confidence = 0.90) and Quest_State == 0:
             print("Start Quest")
-            os.system("adb shell input tap 200 200")
-            time.sleep(2)
+            Quest_State += 1
+
         elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[40, 110], (210, 195, 140), tolerance=20):
             print("Skip")
             os.system("adb shell input tap 284 402")
@@ -137,3 +140,29 @@ if __name__ == "__main__":
             plt.imshow(im)
             print("Talking or Nothing to Do")
             time.sleep(1)
+
+        Quest_Timer += 1
+
+        if Quest_State == Quest_Timer and Quest_State == 1:
+            os.system("adb shell input tap 200 200")
+            time.sleep(2)
+        else:
+            Quest_State = 0
+            Quest_Timer = 0
+
+    '''
+    State 1: Confirm/Accept/Complete/Claim
+        Repete = 1
+    State 2: Talking or Nothing to Do
+        Repete = Many Times
+    State 3: Start Quest
+        Repete = 1
+    State 4: Auto Assign/Auto Equip
+        Repete = 1
+    State 5: Close All Mail
+        Repete = 1
+    State 6: go_manully_button
+        Repete = Many Times
+    State 7: Go Auto
+        repete = 1
+    '''

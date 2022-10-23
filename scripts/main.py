@@ -60,8 +60,7 @@ if __name__ == "__main__":
         print(datetime.datetime.now())
         s = time.time()
         try:
-            print("ForegroundWindow not BlueStacks, adb screencap is using.")
-            os.system('adb shell screencap -p /sdcard/screenshot.png')
+            os.system('Adb shell screencap -p /sdcard/screenshot.png')
             os.system('adb pull /sdcard/screenshot.png ./screenshot.png')
             im = cv2.imread('./screenshot.png')
             os.system('adb shell rm /sdcard/screenshot.png')
@@ -77,56 +76,56 @@ if __name__ == "__main__":
             print("Auto Assign")
             retVal = locateCenterOnPicture(autoassign_button_pic, im, confidence = 0.8)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
-            time.sleep(1)
+            time.sleep(0.1)
         elif locateOnPicture(equip_button_pic, im, confidence = 0.8):
             print("Auto Equip")
             retVal = locateCenterOnPicture(equip_button_pic, im, confidence = 0.8)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
-            time.sleep(1)
+            time.sleep(0.1)
         elif locateOnPicture(CloseMail_Button_pic, im, confidence=0.95):
             print("Close All Mail")
             retVal = locateCenterOnPicture(CloseMail_Button_pic, im, confidence=0.95)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
-            time.sleep(1)
+            time.sleep(0.1)
         elif locateOnPicture(ReviveInTown_Button_pic, im, confidence=0.95):
             print("Revive In Town")
             retVal = locateCenterOnPicture(ReviveInTown_Button_pic, im, confidence=0.95)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
-            time.sleep(1)
+            time.sleep(0.1)
         elif locateOnPicture(claim_button_pic, im, confidence = c):
             print("Claim")
             retVal = locateCenterOnPicture(claim_button_pic, im, confidence = c)
             # os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             os.system("adb shell input tap 637 648")
-            time.sleep(2)
+            time.sleep(0.1)
         elif locateOnPicture(accept_button_pic, im, confidence = c): # tap: 1096 427
             print("Accept")
             retVal = locateCenterOnPicture(accept_button_pic, im, confidence = c)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             os.system("adb shell input tap 1096 427")
-            time.sleep(2)
+            time.sleep(0.1)
         elif locateOnPicture(confirm_button_pic, im, confidence = c):
             print("Confirm")
             retVal = locateCenterOnPicture(confirm_button_pic, im, confidence = c)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             os.system("adb shell input tap 1096 427")
-            time.sleep(2)
+            time.sleep(0.1)
         elif locateOnPicture(complete_button_pic, im, confidence = c):
             print("Complete")
             retVal = locateCenterOnPicture(complete_button_pic, im, confidence = c)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             os.system("adb shell input tap 1096 427")
-            time.sleep(2)
+            time.sleep(0.1)
         elif locateOnPicture(Complete_ComplexButton_pic, im, confidence = 0.9):
             print("Complex Choice: Complete")
             retVal = locateCenterOnPicture(Complete_ComplexButton_pic, im, confidence = 0.9)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
-            time.sleep(2)
+            time.sleep(0.1)
         elif locateOnPicture(Available2Start_ComplexButton_pic, im, confidence = 0.9):
             print("Complex Choice: Accept")
             retVal = locateCenterOnPicture(Available2Start_ComplexButton_pic, im, confidence = 0.9)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
-            time.sleep(2)
+            time.sleep(0.1)
         elif locateOnPicture(go_manully_button_pic, im, confidence = 0.8):
             print("In Autoplay Status")
             time.sleep(5)
@@ -154,12 +153,12 @@ if __name__ == "__main__":
         elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[40, 110], (210, 195, 140), tolerance=20):
             print("Skip")
             os.system("adb shell input tap 284 402")
-            time.sleep(2)
+            time.sleep(0.1)
         else:
             os.system("adb shell input tap 1161 481")
             plt.imshow(im)
             print("Talking or Nothing to Do")
-            time.sleep(1)
+            time.sleep(0.1)
 
         # Quest_Timer += 1
         # if Quest_State == Quest_Timer and Quest_State == 1:

@@ -142,7 +142,6 @@ if __name__ == "__main__":
             time.sleep(1)
 
         Quest_Timer += 1
-
         if Quest_State == Quest_Timer and Quest_State == 1:
             os.system("adb shell input tap 200 200")
             time.sleep(2)

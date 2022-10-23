@@ -41,6 +41,7 @@ if __name__ == "__main__":
     Available2Start_ComplexButton_pic = cv2.imread("./raw_data/US/Buttons/Available2Start-ComplexButton.png")
     Complete_ComplexButton_pic = cv2.imread("./raw_data/US/Buttons/Complete-ComplexButton.png")
     CloseMail_Button_pic = cv2.imread("./raw_data/US/Buttons/CloseMail-Button.png")
+    ReviveInTown_Button_pic  = cv2.imread("./raw_data/US/Buttons/ReviveInTown-Button.png")
     AutoBattle_Status_pic  = cv2.imread("./raw_data/US/Status/AutoBattle-Status.png")
     AutoQuest_Status_pic  = cv2.imread("./raw_data/US/Status/AutoQuest-Status.png")
 
@@ -85,6 +86,11 @@ if __name__ == "__main__":
         elif locateOnPicture(CloseMail_Button_pic, im, confidence=0.95):
             print("Close All Mail")
             retVal = locateCenterOnPicture(CloseMail_Button_pic, im, confidence=0.95)
+            os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            time.sleep(1)
+        elif locateOnPicture(ReviveInTown_Button_pic, im, confidence=0.95):
+            print("Revive In Town")
+            retVal = locateCenterOnPicture(ReviveInTown_Button_pic, im, confidence=0.95)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             time.sleep(1)
         elif locateOnPicture(claim_button_pic, im, confidence = c):

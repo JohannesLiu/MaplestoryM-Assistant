@@ -1,5 +1,5 @@
 # MaplestoryM-Assistance（冒险岛手游辅助）
-
+Developer: Xiaokai(Johannes) Liu
 ## Introduction
 
 Maplestory is one of my favorite video games when I was a Child. There are too many memory of Maplestory for me. I still missed the time when I attacked the blue snails in the west of Henesys. Recently, I found I could play Maplestory on Mobile devices (MaplestoryM), which made me exciting. However, the manipulator of it is typically bad, and the process of playing is very boring. Luckily, I found I could develop some scripts to enable play of this game automatically, which save my patience on it. 

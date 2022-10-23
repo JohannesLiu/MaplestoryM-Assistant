@@ -81,10 +81,11 @@ if __name__ == "__main__":
             retVal = locateCenterOnPicture(CloseMail_Button_pic, im, confidence=0.95)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             time.sleep(1)
-        elif locateOnPicture(accept_button_pic, im, confidence = c):
+        elif locateOnPicture(accept_button_pic, im, confidence = c): # tap: 1096 427
             print("Accept")
             retVal = locateCenterOnPicture(accept_button_pic, im, confidence = c)
-            os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            # os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            os.system("adb shell input tap 1096 427")
             time.sleep(2)
         elif locateOnPicture(claim_button_pic, im, confidence = c):
             print("claim")

@@ -132,7 +132,7 @@ if __name__ == "__main__":
         elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) :
             sv1 = compare_psnr(AutoBattle_Status_pic, im[625:685, 390:455])
             sv2 = compare_psnr(AutoQuest_Status_pic, im[625:685, 390:455])
-            print("sv1 : " + str(sv1), + " sv2: "  + str(sv2) + "\n sv1-sv2: " + str(sv1 - sv2))
+            print("sv1 : " + str(sv1) + " sv2: "  + str(sv2) + "\n sv1-sv2: " + str(sv1 - sv2))
             if sv1 - sv2 >= -1:
                 print("Start Quest")
                 os.system("adb shell input tap 200 200")

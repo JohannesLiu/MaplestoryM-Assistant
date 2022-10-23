@@ -13,6 +13,7 @@ import os
 from IPython.display import clear_output
 import datetime
 from MapleKit.Utils.location import locateOnPicture, locateCenterOnPicture, pixelMatchesColor
+from skimage.metrics import peak_signal_noise_ratio as compare_psnr
 
 WORKPATH = "C:/Users/Johan/Documents/PycharmProjects/MaplestoryM-Assistant"
 desired_window = "BlueStacks App Player"
@@ -26,8 +27,8 @@ if __name__ == "__main__":
     connect = os.popen("adb connect 127.0.0.1:" + str(adb_port)).read()
     print(connect)
 
-    Quest_State = 0
-    Quest_Timer = 0
+    # Quest_State = 0
+    # Quest_Timer = 0
 
     accept_button_pic = cv2.imread("./raw_data/US/Buttons/Accept_Button.png")
     claim_button_pic = cv2.imread("./raw_data/US/Buttons/ClaimReward_Button.png")
@@ -43,7 +44,7 @@ if __name__ == "__main__":
 
     AutoBattle_Status_pic  = cv2.imread("./raw_data/US/Status/AutoBattle-Status.png")
     AutoQuest_Status_pic  = cv2.imread("./raw_data/US/Status/AutoQuest-Status.png")
-    c = 0.6
+    c = 0.55
     run_count = 0
     while True:
         clear_output(wait=True)
@@ -127,9 +128,18 @@ if __name__ == "__main__":
             print(retVal)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             time.sleep(10)
-        elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) and locateOnPicture(AutoBattle_Status_pic, im[610:700, 390:450], confidence = 0.90) and not locateOnPicture(AutoQuest_Status_pic, im[610:700, 390:450], confidence = 0.90) and Quest_State == 0:
-            print("Start Quest")
-            Quest_State += 1
+        # elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) and locateOnPicture(AutoBattle_Status_pic, im[610:700, 390:450], confidence = 0.90) and not locateOnPicture(AutoQuest_Status_pic, im[610:700, 390:450], confidence = 0.90) and Quest_State == 0:
+        elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) :
+            sbv1 = compare_psnr(AutoBattle_Status_pic, im[625:685, 390:455])
+            sqv2 = compare_psnr(AutoQuest_Status_pic, im[625:685, 390:455])
+            if sbv1 > sqv2:
+                print("Start Quest")
+                os.system("adb shell input tap 200 200")
+                time.sleep(2)
+            else:
+                print("Keep Quest")
+                continue
+            # Quest_State += 1
 
         elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[40, 110], (210, 195, 140), tolerance=20):
             print("Skip")
@@ -141,13 +151,13 @@ if __name__ == "__main__":
             print("Talking or Nothing to Do")
             time.sleep(1)
 
-        Quest_Timer += 1
-        if Quest_State == Quest_Timer and Quest_State == 1:
-            os.system("adb shell input tap 200 200")
-            time.sleep(2)
-        else:
-            Quest_State = 0
-            Quest_Timer = 0
+        # Quest_Timer += 1
+        # if Quest_State == Quest_Timer and Quest_State == 1:
+        #     os.system("adb shell input tap 200 200")
+        #     time.sleep(2)
+        # else:
+        #     Quest_State = 0
+        #     Quest_Timer = 0
 
     '''
     State 1: Confirm/Accept/Complete/Claim

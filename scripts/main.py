@@ -137,6 +137,7 @@ if __name__ == "__main__":
                 os.system("adb shell input tap 200 200")
                 time.sleep(2)
             else:
+                print(sbv1, sqv2)
                 print("Keep Quest")
                 continue
             # Quest_State += 1

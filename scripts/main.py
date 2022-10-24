@@ -55,15 +55,17 @@ if __name__ == "__main__":
         clear_output(wait=True)
         run_count += 1
         print(f"Current round count:{run_count}")
-        if run_count%500==0:
+        if run_count%10000==0:
             os.system("adb shell kill-server")
             os.system("adb shell start-server")
             os.popen("adb connect 127.0.0.1:" + str(adb_port))
         print(datetime.datetime.now())
         s = time.time()
         try:
-            os.system('Adb shell screencap -p /sdcard/screenshot.png')
+            os.system('adb shell screencap -p /sdcard/screenshot.png')
             os.system('adb pull /sdcard/screenshot.png ./screenshot.png')
+            # print("copy .\\screenshot.png .\\raw_data\\US\\Status\\raw_data\\" + str(datetime.datetime.now()).replace(" ", "_").replace(":", "_") + ".png")
+            # os.system("copy .\\screenshot.png .\\raw_data\\US\\Status\\raw_data\\" + str(datetime.datetime.now()).replace(" ", "_").replace(":", "_") + ".png")
             im = cv2.imread('./screenshot.png')
             os.system('adb shell rm /sdcard/screenshot.png')
             os.remove('./screenshot.png')
@@ -78,90 +80,109 @@ if __name__ == "__main__":
             print("Auto Assign")
             retVal = locateCenterOnPicture(autoassign_button_pic, im, confidence = 0.8)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            WaitQuestTime = 0
             time.sleep(0.1)
         elif locateOnPicture(equip_button_pic, im, confidence = 0.8):
             print("Auto Equip")
             retVal = locateCenterOnPicture(equip_button_pic, im, confidence = 0.8)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            WaitQuestTime = 0
             time.sleep(0.1)
         elif locateOnPicture(CloseMail_Button_pic, im, confidence=0.95):
             print("Close All Mail")
             retVal = locateCenterOnPicture(CloseMail_Button_pic, im, confidence=0.95)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            WaitQuestTime = 0
             time.sleep(0.1)
         elif locateOnPicture(ReviveInTown_Button_pic, im, confidence=0.95):
             print("Revive In Town")
             retVal = locateCenterOnPicture(ReviveInTown_Button_pic, im, confidence=0.95)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            WaitQuestTime = 0
             time.sleep(0.1)
         elif locateOnPicture(claim_button_pic, im, confidence = c):
             print("Claim")
             retVal = locateCenterOnPicture(claim_button_pic, im, confidence = c)
             # os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             os.system("adb shell input tap 637 648")
+            WaitQuestTime = 0
             time.sleep(0.1)
         elif locateOnPicture(accept_button_pic, im, confidence = c): # tap: 1096 427
             print("Accept")
             retVal = locateCenterOnPicture(accept_button_pic, im, confidence = c)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             os.system("adb shell input tap 1096 427")
+            WaitQuestTime = 0
             time.sleep(0.1)
         elif locateOnPicture(confirm_button_pic, im, confidence = c):
             print("Confirm")
             retVal = locateCenterOnPicture(confirm_button_pic, im, confidence = c)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             os.system("adb shell input tap 1096 427")
+            WaitQuestTime = 0
             time.sleep(0.1)
         elif locateOnPicture(complete_button_pic, im, confidence = c):
             print("Complete")
             retVal = locateCenterOnPicture(complete_button_pic, im, confidence = c)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             os.system("adb shell input tap 1096 427")
+            WaitQuestTime = 0
             time.sleep(0.1)
         elif locateOnPicture(Complete_ComplexButton_pic, im, confidence = 0.9):
             print("Complex Choice: Complete")
             retVal = locateCenterOnPicture(Complete_ComplexButton_pic, im, confidence = 0.9)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            WaitQuestTime = 0
             time.sleep(0.1)
         elif locateOnPicture(Available2Start_ComplexButton_pic, im, confidence = 0.9):
             print("Complex Choice: Accept")
             retVal = locateCenterOnPicture(Available2Start_ComplexButton_pic, im, confidence = 0.9)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            WaitQuestTime = 0
             time.sleep(0.1)
         elif locateOnPicture(go_manully_button_pic, im, confidence = 0.8):
             print("In Autoplay Status")
+            WaitQuestTime = 0
             time.sleep(5)
         elif locateOnPicture(autoplay_button_pic, im, confidence = 0.8):
             print("AutoPlay Stopped, Tap to Continue!")
             retVal = locateCenterOnPicture(autoplay_button_pic, im, confidence = 0.8)
             print(retVal)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            WaitQuestTime = 0
             time.sleep(10)
         # elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) and locateOnPicture(AutoBattle_Status_pic, im[610:700, 390:450], confidence = 0.90) and not locateOnPicture(AutoQuest_Status_pic, im[610:700, 390:450], confidence = 0.90) and Quest_State == 0:
         elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) :
             # sv1 = compare_psnr(AutoBattle_Status_pic, im[625:685, 390:455])
             # sv2 = compare_psnr(AutoQuest_Status_pic, im[625:685, 390:455])
             # print("sv1 : " + str(sv1) + " sv2: "  + str(sv2) + "\n sv1-sv2: " + str(sv1 - sv2))
-            print("Begin Machine Learning Model")
+            print("./raw_data/US/Status/data/"+ str(datetime.datetime.now()).replace(" ", "_").replace(":", "_")+ ".png" )
+            cv2.imwrite("./raw_data/US/Status/data/"+ str(datetime.datetime.now()).replace(" ", "_").replace(":", "_") + ".png", im[625:685, 390:455])
+            print("Start Machine Learning Model")
             print(cv2.cvtColor(im[625:685, 390:455], cv2.COLOR_BGR2GRAY).shape)
             result = model.predict(cv2.cvtColor(im[625:685, 390:455], cv2.COLOR_BGR2GRAY).reshape(1, -1))
             print("Prediction Result: " + result[0])
-            if result[0] == "AutoBattle":
+            if result[0] == "AutoBattle" or WaitQuestTime > 100:
                 print("Start Quest")
                 os.system("adb shell input tap 200 200")
+                WaitQuestTime = 0
                 time.sleep(2)
             else:
-                print("Keep Quest")
+                print("Keep Quest, WaitQuestTime: " + str(WaitQuestTime))
+                WaitQuestTime += 1
+                time.sleep(1)
                 continue
             # Quest_State += 1
         elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[40, 110], (210, 195, 140), tolerance=20):
             print("Skip")
             os.system("adb shell input tap 284 402")
+            WaitQuestTime = 0
             time.sleep(0.1)
         else:
             os.system("adb shell input tap 1161 481")
             plt.imshow(im)
             print("Talking or Nothing to Do")
+            WaitQuestTime = 0
             time.sleep(0.1)
 
         # Quest_Timer += 1

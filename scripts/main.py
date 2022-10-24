@@ -14,6 +14,7 @@ from IPython.display import clear_output
 import datetime
 from MapleKit.Utils.location import locateOnPicture, locateCenterOnPicture, pixelMatchesColor
 from skimage.metrics import peak_signal_noise_ratio as compare_psnr
+import joblib
 
 WORKPATH = "C:/Users/Johan/Documents/PycharmProjects/MaplestoryM-Assistant"
 desired_window = "BlueStacks App Player"
@@ -27,6 +28,7 @@ if __name__ == "__main__":
     connect = os.popen("adb connect 127.0.0.1:" + str(adb_port)).read()
     print(connect)
 
+    model = joblib.load("./output/ckpt/status-predictor.pkl")
     # Quest_State = 0
     # Quest_Timer = 0
 
@@ -137,17 +139,19 @@ if __name__ == "__main__":
             time.sleep(10)
         # elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) and locateOnPicture(AutoBattle_Status_pic, im[610:700, 390:450], confidence = 0.90) and not locateOnPicture(AutoQuest_Status_pic, im[610:700, 390:450], confidence = 0.90) and Quest_State == 0:
         elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) :
-            sv1 = compare_psnr(AutoBattle_Status_pic, im[625:685, 390:455])
-            sv2 = compare_psnr(AutoQuest_Status_pic, im[625:685, 390:455])
-            print("sv1 : " + str(sv1) + " sv2: "  + str(sv2) + "\n sv1-sv2: " + str(sv1 - sv2))
-            if sv1 - sv2 > -0.5 or WaitQuestTime > 10:
+            # sv1 = compare_psnr(AutoBattle_Status_pic, im[625:685, 390:455])
+            # sv2 = compare_psnr(AutoQuest_Status_pic, im[625:685, 390:455])
+            # print("sv1 : " + str(sv1) + " sv2: "  + str(sv2) + "\n sv1-sv2: " + str(sv1 - sv2))
+            print("Begin Machine Learning Model")
+            print(cv2.cvtColor(im[625:685, 390:455], cv2.COLOR_BGR2GRAY).shape)
+            result = model.predict(cv2.cvtColor(im[625:685, 390:455], cv2.COLOR_BGR2GRAY).reshape(1, -1))
+            print("Prediction Result: " + result[0])
+            if result[0] == "AutoBattle":
                 print("Start Quest")
                 os.system("adb shell input tap 200 200")
                 time.sleep(2)
-                WaitQuestTime = 0
             else:
                 print("Keep Quest")
-                WaitQuestTime += 1
                 continue
             # Quest_State += 1
         elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[40, 110], (210, 195, 140), tolerance=20):

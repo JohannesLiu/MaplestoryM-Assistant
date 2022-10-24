@@ -162,7 +162,7 @@ if __name__ == "__main__":
             print(cv2.cvtColor(im[625:685, 390:455], cv2.COLOR_BGR2GRAY).shape)
             result = model.predict(cv2.cvtColor(im[625:685, 390:455], cv2.COLOR_BGR2GRAY).reshape(1, -1))
             print("Prediction Result: " + result[0])
-            if result[0] == "AutoBattle" or WaitQuestTime > 100:
+            if result[0] == "AutoBattle" or WaitQuestTime > 300:
                 print("Start Quest")
                 os.system("adb shell input tap 200 200")
                 WaitQuestTime = 0

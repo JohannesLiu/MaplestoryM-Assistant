@@ -18,7 +18,7 @@ import joblib
 
 WORKPATH = "C:/Users/Johan/Documents/PycharmProjects/MaplestoryM-Assistant"
 desired_window = "BlueStacks App Player"
-adb_port = 3545
+adb_port = 62403
 os.chdir(WORKPATH)
 
 
@@ -43,6 +43,8 @@ if __name__ == "__main__":
     Available2Start_ComplexButton_pic = cv2.imread("./raw_data/US/Buttons/Available2Start-ComplexButton.png")
     Complete_ComplexButton_pic = cv2.imread("./raw_data/US/Buttons/Complete-ComplexButton.png")
     CloseMail_Button_pic = cv2.imread("./raw_data/US/Buttons/CloseMail-Button.png")
+    CloseInvitation1_Button_pic = cv2.imread("./raw_data/US/Buttons/CloseInvitation1-Button.png")
+    CloseInvitation2_Button_pic = cv2.imread("./raw_data/US/Buttons/CloseInvitation2-Button.png")
     ReviveInTown_Button_pic  = cv2.imread("./raw_data/US/Buttons/ReviveInTown-Button.png")
     AutoBattle_Status_pic  = cv2.imread("./raw_data/US/Status/AutoBattle-Status.png")
     AutoQuest_Status_pic  = cv2.imread("./raw_data/US/Status/AutoQuest-Status.png")
@@ -88,15 +90,9 @@ if __name__ == "__main__":
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             WaitQuestTime = 0
             time.sleep(0.1)
-        elif locateOnPicture(CloseMail_Button_pic, im, confidence=0.95):
-            print("Close All Mail")
-            retVal = locateCenterOnPicture(CloseMail_Button_pic, im, confidence=0.95)
-            os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
-            WaitQuestTime = 0
-            time.sleep(0.1)
-        elif locateOnPicture(ReviveInTown_Button_pic, im, confidence=0.95):
+        elif locateOnPicture(ReviveInTown_Button_pic, im, confidence=0.9):
             print("Revive In Town")
-            retVal = locateCenterOnPicture(ReviveInTown_Button_pic, im, confidence=0.95)
+            retVal = locateCenterOnPicture(ReviveInTown_Button_pic, im, confidence=0.9)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             WaitQuestTime = 0
             time.sleep(0.1)
@@ -134,9 +130,9 @@ if __name__ == "__main__":
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             WaitQuestTime = 0
             time.sleep(0.1)
-        elif locateOnPicture(Available2Start_ComplexButton_pic, im, confidence = 0.9):
+        elif locateOnPicture(Available2Start_ComplexButton_pic, im, confidence = 0.8):
             print("Complex Choice: Accept")
-            retVal = locateCenterOnPicture(Available2Start_ComplexButton_pic, im, confidence = 0.9)
+            retVal = locateCenterOnPicture(Available2Start_ComplexButton_pic, im, confidence = 0.8)
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             WaitQuestTime = 0
             time.sleep(0.1)
@@ -151,13 +147,28 @@ if __name__ == "__main__":
             os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
             WaitQuestTime = 0
             time.sleep(10)
+        elif locateOnPicture(CloseInvitation1_Button_pic, im, confidence=0.80):
+            print("Close Invitation 1")
+            retVal = locateCenterOnPicture(CloseInvitation1_Button_pic, im, confidence=0.80)
+            os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            WaitQuestTime = 0
+            time.sleep(0.1)
+        elif locateOnPicture(CloseInvitation2_Button_pic, im, confidence=0.80):
+            print("Close Invitation 2")
+            retVal = locateCenterOnPicture(CloseInvitation2_Button_pic, im, confidence=0.80)
+            os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            WaitQuestTime = 0
+            time.sleep(0.1)
+        elif locateOnPicture(CloseMail_Button_pic, im, confidence=0.95):
+            print("Close All Mail")
+            retVal = locateCenterOnPicture(CloseMail_Button_pic, im, confidence=0.95)
+            os.system("adb shell input tap " + str(retVal[0]) + " " + str(retVal[1]))
+            WaitQuestTime = 0
+            time.sleep(0.1)
         # elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) and locateOnPicture(AutoBattle_Status_pic, im[610:700, 390:450], confidence = 0.90) and not locateOnPicture(AutoQuest_Status_pic, im[610:700, 390:450], confidence = 0.90) and Quest_State == 0:
         elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) :
-            # sv1 = compare_psnr(AutoBattle_Status_pic, im[625:685, 390:455])
-            # sv2 = compare_psnr(AutoQuest_Status_pic, im[625:685, 390:455])
-            # print("sv1 : " + str(sv1) + " sv2: "  + str(sv2) + "\n sv1-sv2: " + str(sv1 - sv2))
-            print("./raw_data/US/Status/data/"+ str(datetime.datetime.now()).replace(" ", "_").replace(":", "_")+ ".png" )
-            cv2.imwrite("./raw_data/US/Status/data/"+ str(datetime.datetime.now()).replace(" ", "_").replace(":", "_") + ".png", im[625:685, 390:455])
+            # print("./raw_data/US/Status/data/"+ str(datetime.datetime.now()).replace(" ", "_").replace(":", "_")+ ".png" )
+            # cv2.imwrite("./raw_data/US/Status/data/"+ str(datetime.datetime.now()).replace(" ", "_").replace(":", "_") + ".png", im[625:685, 390:455])
             print("Start Machine Learning Model")
             print(cv2.cvtColor(im[625:685, 390:455], cv2.COLOR_BGR2GRAY).shape)
             result = model.predict(cv2.cvtColor(im[625:685, 390:455], cv2.COLOR_BGR2GRAY).reshape(1, -1))
@@ -166,22 +177,23 @@ if __name__ == "__main__":
                 print("Start Quest")
                 os.system("adb shell input tap 200 200")
                 WaitQuestTime = 0
-                time.sleep(2)
+                time.sleep(1)
             else:
                 print("Keep Quest, WaitQuestTime: " + str(WaitQuestTime))
+                # os.system("adb shell input tap 857 655")
                 WaitQuestTime += 1
                 time.sleep(1)
                 continue
             # Quest_State += 1
         elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[40, 110], (210, 195, 140), tolerance=20):
             print("Skip")
-            os.system("adb shell input tap 284 402")
             WaitQuestTime = 0
             time.sleep(0.1)
         else:
             os.system("adb shell input tap 1161 481")
             plt.imshow(im)
             print("Talking or Nothing to Do")
+            os.system("adb shell input tap 587 655")
             WaitQuestTime = 0
             time.sleep(0.1)
 

@@ -18,7 +18,7 @@ import joblib
 
 WORKPATH = "C:/Users/Johan/Documents/PycharmProjects/MaplestoryM-Assistant"
 desired_window = "BlueStacks App Player"
-adb_port = 62403
+adb_port = 62366
 os.chdir(WORKPATH)
 
 
@@ -166,25 +166,31 @@ if __name__ == "__main__":
             WaitQuestTime = 0
             time.sleep(0.1)
         # elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) and locateOnPicture(AutoBattle_Status_pic, im[610:700, 390:450], confidence = 0.90) and not locateOnPicture(AutoQuest_Status_pic, im[610:700, 390:450], confidence = 0.90) and Quest_State == 0:
-        elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) :
+        # elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[203, 95], (6, 171, 96), tolerance=20) :
+        #     # print("./raw_data/US/Status/data/"+ str(datetime.datetime.now()).replace(" ", "_").replace(":", "_")+ ".png" )
+        #     # cv2.imwrite("./raw_data/US/Status/data/"+ str(datetime.datetime.now()).replace(" ", "_").replace(":", "_") + ".png", im[625:685, 390:455])
+        #     print("Start Machine Learning Model")
+        #     print(cv2.cvtColor(im[625:685, 390:455], cv2.COLOR_BGR2GRAY).shape)
+        #     result = model.predict(cv2.cvtColor(im[625:685, 390:455], cv2.COLOR_BGR2GRAY).reshape(1, -1))
+        #     print("Prediction Result: " + result[0])
+        #     if result[0] == "AutoBattle" or WaitQuestTime > 300:
+        #         print("Start Quest")
+        #         os.system("adb shell input tap 200 200")
+        #         WaitQuestTime = 0
+        #         time.sleep(1)
+        #     else:
+        #         print("Keep Quest, WaitQuestTime: " + str(WaitQuestTime))
+        #         # os.system("adb shell input tap 857 655")
+        #         WaitQuestTime += 1
+        #         time.sleep(1)
+        #         continue
+        elif model.predict(cv2.cvtColor(im[625:685, 390:455], cv2.COLOR_BGR2GRAY).reshape(1, -1))[0] == "AutoBattle" or WaitQuestTime > 300:
             # print("./raw_data/US/Status/data/"+ str(datetime.datetime.now()).replace(" ", "_").replace(":", "_")+ ".png" )
             # cv2.imwrite("./raw_data/US/Status/data/"+ str(datetime.datetime.now()).replace(" ", "_").replace(":", "_") + ".png", im[625:685, 390:455])
-            print("Start Machine Learning Model")
-            print(cv2.cvtColor(im[625:685, 390:455], cv2.COLOR_BGR2GRAY).shape)
-            result = model.predict(cv2.cvtColor(im[625:685, 390:455], cv2.COLOR_BGR2GRAY).reshape(1, -1))
-            print("Prediction Result: " + result[0])
-            if result[0] == "AutoBattle" or WaitQuestTime > 300:
-                print("Start Quest")
-                os.system("adb shell input tap 200 200")
-                WaitQuestTime = 0
-                time.sleep(1)
-            else:
-                print("Keep Quest, WaitQuestTime: " + str(WaitQuestTime))
-                # os.system("adb shell input tap 857 655")
-                WaitQuestTime += 1
-                time.sleep(1)
-                continue
-            # Quest_State += 1
+            print("Start Quest")
+            os.system("adb shell input tap 200 200")
+            WaitQuestTime = 0
+            time.sleep(1)
         elif pixelMatchesColor(cv2.cvtColor(im,cv2.COLOR_BGR2RGB)[40, 110], (210, 195, 140), tolerance=20):
             print("Skip")
             WaitQuestTime = 0

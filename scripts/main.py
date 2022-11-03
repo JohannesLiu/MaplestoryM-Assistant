@@ -18,7 +18,7 @@ import joblib
 
 WORKPATH = "C:/Users/Johan/Documents/PycharmProjects/MaplestoryM-Assistant"
 desired_window = "BlueStacks App Player"
-adb_port = 62366
+adb_port = 59487
 os.chdir(WORKPATH)
 
 
